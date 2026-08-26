@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#d6b45a">
+<meta name="description" content="KH Baby - ملابس أطفال بتصميمات ناعمة وأنيقة">
+<title>KH Baby | Baby Clothing</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="container nav">
+    <a class="brand" href="#home"><img src="assets/logo.jpg" alt="KH Baby"><span>KH Baby</span></a>
+    <nav>
+      <a href="#home">الرئيسية</a>
+      <a href="#products">المنتجات</a>
+      <a href="#about">عن KH Baby</a>
+      <a href="#contact">تواصل معنا</a>
+    </nav>
+    <button class="cart-btn" id="openCart">السلة <b id="cartCount">0</b></button>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">BABY CLOTHING</span>
+      <h1>أناقة صغيرة<br><em>بلمسة حُب</em> 🩵</h1>
+      <p>اختيارات لطيفة ومريحة لأطفالكم، بتفاصيل ناعمة وتصميمات تناسب كل لحظة.</p>
+      <a href="#products" class="primary">تسوقي الآن</a>
+    </div>
+    <div class="hero-card"><img src="assets/product-1.jpg" alt="KH Baby"></div>
+  </div>
+</section>
+
+<section class="products section" id="products">
+  <div class="container">
+    <div class="section-head">
+      <div><span class="eyebrow">KH BABY COLLECTION</span><h2>منتجاتنا</h2></div>
+      <span class="count-label">4 منتجات</span>
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </div>
+</section>
+
+<section class="about section" id="about">
+  <div class="container about-box">
+    <div><span class="eyebrow">KH BABY</span><h2>لأن التفاصيل الصغيرة تفرق</h2></div>
+    <p>نختار لكم قطع أطفال بتصميمات هادئة وخامات مناسبة للّبس اليومي، مع اهتمام بالتفاصيل التي تجعل إطلالة طفلكم أجمل.</p>
+  </div>
+</section>
+
+<section class="contact section" id="contact">
+  <div class="container contact-box">
+    <div><span class="eyebrow">CONTACT</span><h2>جاهزين لطلبك 🩵</h2><p>للاستفسار أو تأكيد الطلب تواصل معنا مباشرة عبر واتساب.</p></div>
+    <a class="whatsapp" target="_blank" rel="noopener" href="https://wa.me/201275472977">واتساب: 01275472977</a>
+  </div>
+</section>
+</main>
+
+<footer><div class="container"><span>© KH Baby</span><span>Baby Clothing</span></div></footer>
+
+<div class="modal" id="productModal" aria-hidden="true">
+  <div class="modal-card">
+    <button class="close" data-close>×</button>
+    <img id="modalImg" alt="">
+    <div class="modal-info">
+      <span class="eyebrow">KH BABY</span>
+      <h2 id="modalName"></h2><p id="modalSub"></p>
+      <div class="price" id="modalPrice"></div>
+      <label>اختاري المقاس</label>
+      <div class="sizes" id="modalSizes"></div>
+      <button class="primary full" id="addFromModal">أضف للسلة</button>
+    </div>
+  </div>
+</div>
+
+<aside class="drawer" id="cartDrawer">
+  <div class="drawer-head"><h2>سلة المشتريات</h2><button class="close" id="closeCart">×</button></div>
+  <div id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="total"><span>الإجمالي</span><strong id="cartTotal">0 ج.م</strong></div>
+    <button class="whatsapp full" id="checkout">إرسال الطلب عبر واتساب</button>
+  </div>
+</aside>
+<div class="overlay" id="overlay"></div>
+<a class="wa-float" target="_blank" rel="noopener" href="https://wa.me/201275472977">واتساب</a>
+<script src="script.js"></script>
+</body>
+</html>

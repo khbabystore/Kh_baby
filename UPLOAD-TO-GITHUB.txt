@@ -1,0 +1,12 @@
+مهم:
+ارفع كل محتويات هذا المجلد إلى نفس مستوى index.html داخل مستودع GitHub.
+لا ترفع index.html وحده.
+يجب أن يكون ترتيب الملفات:
+index.html
+style.css
+script.js
+assets/logo.jpg
+assets/product-1.jpg
+assets/product-2.jpg
+assets/product-3.jpg
+assets/product-4.jpg
