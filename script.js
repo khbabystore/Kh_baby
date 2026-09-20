@@ -1,20 +1,20 @@
 const products = [
-{id:1,name:"سلوبت جبردين شورت الأسد",subtitle:"سلوبت شورت + اندر شيرت",price:350,color:"كريمي",sizes:["2 سنوات","3 سنوات","4 سنوات"],image:"assets/product-1.jpg"},
-{id:2,name:"سلوبت جبردين شورت BEA",subtitle:"سلوبت شورت + اندر شيرت",price:350,color:"كريمي",sizes:["2 سنوات","3 سنوات","4 سنوات"],image:"assets/product-2.jpg"},
-{id:3,name:"سلوبت جبردين سنابل",subtitle:"سلوبت طويل + اندر شيرت",price:400,color:"كريمي",sizes:["2 سنوات","3 سنوات","4 سنوات"],image:"assets/product-3.jpg"},
-{id:4,name:"سلوبت جبردين الحيوانات اللطيفة",subtitle:"سلوبت طويل + اندر شيرت",price:400,color:"كريمي",sizes:["2 سنوات","3 سنوات","4 سنوات"],image:"assets/product-4.jpg"}
+{id:1,name:"سلوبت جبردين شورت الأسد",subtitle:"سلوبت شورت + اندر شيرت",price:350,color:"كريمي",sizes:["2 سنوات","3 سنوات","4 سنوات"],images:["assets/product-1-1.jpg","assets/product-1-2.jpg"]},
+{id:2,name:"سلوبت جبردين شورت BEA",subtitle:"سلوبت شورت + اندر شيرت",price:350,color:"كريمي",sizes:["2 سنوات","3 سنوات","4 سنوات"],images:["assets/product-2-1.jpg","assets/product-2-2.jpg"]},
+{id:3,name:"سلوبت جبردين سنابل",subtitle:"سلوبت طويل + اندر شيرت",price:400,color:"كريمي",sizes:["2 سنوات","3 سنوات","4 سنوات"],images:["assets/product-3-1.jpg","assets/product-3-2.jpg"]},
+{id:4,name:"سلوبت جبردين الحيوانات اللطيفة",subtitle:"سلوبت طويل + اندر شيرت",price:400,color:"كريمي",sizes:["2 سنوات","3 سنوات","4 سنوات"],images:["assets/product-4-1.jpg","assets/product-4-2.jpg"]}
 ];
 let cart=JSON.parse(localStorage.getItem("khbaby-cart")||"[]"), selectedProduct=null, selectedSize=null;
 const $=s=>document.querySelector(s);
 function money(n){return n.toLocaleString("ar-EG")+" ج.م"}
 function renderProducts(){
  $("#productGrid").innerHTML=products.map(p=>`<article class="product">
-<img src="${p.image}" alt="${p.name}">
+<img src="${p.images[0]}" alt="${p.name}">
 <div class="pbody"><h3>${p.name}</h3><p>${p.subtitle} • ${p.color}</p><div class="pfoot"><span class="price">${money(p.price)}</span><button class="view" onclick="openProduct(${p.id})">التفاصيل</button></div></div></article>`).join("");
 }
 function openProduct(id){
  selectedProduct=products.find(p=>p.id===id); selectedSize=null;
- $("#modalImg").src=selectedProduct.image; $("#modalImg").alt=selectedProduct.name;
+ $("#modalGallery").innerHTML=selectedProduct.images.map((img,i)=>`<img src="${img}" alt="${selectedProduct.name} - صورة ${i+1}">`).join("");
  $("#modalName").textContent=selectedProduct.name; $("#modalSub").textContent=selectedProduct.subtitle+" • اللون "+selectedProduct.color;
  $("#modalPrice").textContent=money(selectedProduct.price);
  $("#modalSizes").innerHTML=selectedProduct.sizes.map(s=>`<button class="size" onclick="chooseSize(this,'${s}')">${s}</button>`).join("");
@@ -25,9 +25,9 @@ $("#addFromModal").onclick=()=>{if(!selectedSize)return alert("من فضلك ا�
 function saveCart(){localStorage.setItem("khbaby-cart",JSON.stringify(cart));renderCart()}
 function renderCart(){
  $("#cartCount").textContent=cart.length;
- if(!cart.length){$("#cartItems").innerHTML='<div style="padding:40px 5px;text-align:center;color:#75818a">السلة فارغة حاليًا 🩵</div>';$("#cartTotal").textContent=money(0);return}
+ if(!cart.length){$("#cartItems").innerHTML='<div style="padding:40px 5px;text-align:center;color:#75818a">السلة فارغة حاليًا 🩵</div>';$(`#cartTotal`).textContent=money(0);return}
  let total=0;
- $("#cartItems").innerHTML=cart.map((item,i)=>{let p=products.find(x=>x.id===item.productId);total+=p.price;return `<div class="cart-item"><img src="${p.image}" alt=""><div><h4>${p.name}</h4><small>المقاس: ${item.size}<br>${money(p.price)}</small></div><button class="remove" onclick="removeItem(${i})">حذف</button></div>`}).join("");
+ $("#cartItems").innerHTML=cart.map((item,i)=>{let p=products.find(x=>x.id===item.productId);total+=p.price;return `<div class="cart-item"><img src="${p.images[0]}" alt=""><div><h4>${p.name}</h4><small>المقاس: ${item.size}<br>${money(p.price)}</small></div><button class="remove" onclick="removeItem(${i})">حذف</button></div>`}).join("");
  $("#cartTotal").textContent=money(total)
 }
 function removeItem(i){cart.splice(i,1);saveCart()}
