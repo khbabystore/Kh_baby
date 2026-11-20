@@ -10,3 +10,7 @@ assets/product-1.jpg
 assets/product-2.jpg
 assets/product-3.jpg
 assets/product-4.jpg
+
+تمت إضافة Meta Pixel إلى index.html.
+ارفع جميع الملفات بعد فك الضغط إلى المستودع نفسه، مع استبدال الملفات القديمة.
+بعد النشر اختبر الأحداث من مدير الأحداث > اختبار الأحداث.

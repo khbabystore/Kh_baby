@@ -14,6 +14,13 @@ function renderProducts(){
 }
 function openProduct(id){
  selectedProduct=products.find(p=>p.id===id); selectedSize=null;
+ if(typeof fbq==="function") fbq('track','ViewContent',{
+   content_ids:[String(selectedProduct.id)],
+   content_name:selectedProduct.name,
+   content_type:'product',
+   value:selectedProduct.price,
+   currency:'EGP'
+ });
  $("#modalGallery").innerHTML=selectedProduct.images.map((img,i)=>`<img src="${img}" alt="${selectedProduct.name} - صورة ${i+1}">`).join("");
  $("#modalName").textContent=selectedProduct.name; $("#modalSub").textContent=selectedProduct.subtitle+" • اللون "+selectedProduct.color;
  $("#modalPrice").innerHTML=`<del>${money(selectedProduct.originalPrice)}</del> <strong>${money(selectedProduct.price)}</strong>`;
@@ -21,7 +28,15 @@ function openProduct(id){
  $("#productModal").classList.add("show"); $("#productModal").setAttribute("aria-hidden","false");
 }
 function chooseSize(btn,size){selectedSize=size;document.querySelectorAll(".size").forEach(x=>x.classList.remove("active"));btn.classList.add("active")}
-$("#addFromModal").onclick=()=>{if(!selectedSize)return alert("من فضلك اختار المقاس");cart.push({productId:selectedProduct.id,size:selectedSize});saveCart();closeProduct();openCart()}
+$("#addFromModal").onclick=()=>{if(!selectedSize)return alert("من فضلك اختار المقاس");cart.push({productId:selectedProduct.id,size:selectedSize});
+ if(typeof fbq==="function") fbq('track','AddToCart',{
+   content_ids:[String(selectedProduct.id)],
+   content_name:selectedProduct.name,
+   content_type:'product',
+   value:selectedProduct.price,
+   currency:'EGP'
+ });
+ saveCart();closeProduct();openCart()}
 function saveCart(){localStorage.setItem("khbaby-cart",JSON.stringify(cart));renderCart()}
 function renderCart(){
  $("#cartCount").textContent=cart.length;
@@ -38,10 +53,26 @@ $("#openCart").onclick=openCart;$("#closeCart").onclick=closeCart;$("#overlay").
 document.querySelector("[data-close]").onclick=closeProduct;
 $("#checkout").onclick=()=>{
  if(!cart.length)return alert("السلة فارغة");
+ if(typeof fbq==="function") {
+   const checkoutValue=cart.reduce((sum,item)=>sum+products.find(p=>p.id===item.productId).price,0);
+   fbq('track','InitiateCheckout',{
+     content_ids:cart.map(item=>String(item.productId)),
+     content_type:'product',
+     num_items:cart.length,
+     value:checkoutValue,
+     currency:'EGP'
+   });
+ }
  let lines=["مرحبًا KH Baby 👋","أريد تأكيد الطلب:",""];
  cart.forEach((item,i)=>{let p=products.find(x=>x.id===item.productId);lines.push(`${i+1}. ${p.name} — المقاس ${item.size} — ${money(p.price)}`)});
  let total=cart.reduce((s,item)=>s+products.find(p=>p.id===item.productId).price,0);
  lines.push("",`الإجمالي: ${money(total)}`,"","الاسم:","المحافظة:","العنوان:","رقم الهاتف:");
  location.href="https://wa.me/201275472977?text="+encodeURIComponent(lines.join("\n"));
 };
+
+document.querySelectorAll('a.whatsapp, a.wa-float').forEach(link=>{
+ link.addEventListener('click',()=>{
+   if(typeof fbq==="function") fbq('track','Contact');
+ });
+});
 renderProducts();renderCart();
