@@ -70,5 +70,71 @@
       "assets/product-4-1.jpg",
       "assets/product-4-2.jpg"
     ]
+  },
+  {
+    "id": 5,
+    "name": "سلوبت فرو أحمر دبدوب",
+    "subtitle": "سلوبت فرو ناعم بتطريز الدب الأنيق",
+    "price": 350,
+    "color": "أحمر",
+    "sizes": [
+      "0-6 شهور",
+      "6-12 شهر",
+      "12-24 شهر"
+    ],
+    "image": "assets/product-5-1.jpg",
+    "images": [
+      "assets/product-5-1.jpg",
+      "assets/product-5-2.jpg"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "سلوبت فرو أحمر رجل الثلج",
+    "subtitle": "سلوبت فرو ناعم بتطريز رجل الثلج",
+    "price": 350,
+    "color": "أحمر",
+    "sizes": [
+      "0-6 شهور",
+      "6-12 شهر",
+      "12-24 شهر"
+    ],
+    "image": "assets/product-6-1.jpg",
+    "images": [
+      "assets/product-6-1.jpg",
+      "assets/product-6-2.jpg"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "سلوبت فرو بينك النجمة",
+    "subtitle": "سلوبت فرو ناعم بشكل نجمة رقيق",
+    "price": 300,
+    "color": "بينك",
+    "sizes": [
+      "0-6 شهور",
+      "6-12 شهر"
+    ],
+    "image": "assets/product-7-1.jpg",
+    "images": [
+      "assets/product-7-1.jpg",
+      "assets/product-7-2.jpg"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "سلوبت فرو بيبي بلو النجمة",
+    "subtitle": "سلوبت فرو ناعم بشكل نجمة رقيق",
+    "price": 300,
+    "color": "بيبي بلو",
+    "sizes": [
+      "0-6 شهور",
+      "6-12 شهر"
+    ],
+    "image": "assets/product-8-1.jpg",
+    "images": [
+      "assets/product-8-1.jpg",
+      "assets/product-8-2.jpg"
+    ]
   }
 ]
