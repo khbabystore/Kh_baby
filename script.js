@@ -12,7 +12,11 @@ let cart=JSON.parse(localStorage.getItem("khbaby-cart")||"[]"), selectedProduct=
 const $=s=>document.querySelector(s);
 function money(n){return n.toLocaleString("ar-EG")+" ج.م"}
 function renderProducts(){
- $("#productGrid").innerHTML=products.map(p=>`<article class="product">
+ const collection=document.body.dataset.collection;
+ const visibleProducts=collection==="summer" ? products.filter(p=>p.id>=1 && p.id<=4) : collection==="winter" ? products.filter(p=>p.id>=5 && p.id<=8) : products;
+ const countLabel=document.querySelector(".count-label");
+ if(countLabel && collection) countLabel.textContent=`${visibleProducts.length} منتجات`;
+ $("#productGrid").innerHTML=visibleProducts.map(p=>`<article class="product">
 <img src="${p.images[0]}" alt="${p.name}">
 <div class="pbody"><h3>${p.name}</h3><p>${p.subtitle} • ${p.color}</p><div class="pfoot"><span class="price">${p.originalPrice ? `<del>${money(p.originalPrice)}</del> ` : ""}${money(p.price)}</span><button class="view" onclick="openProduct(${p.id})">التفاصيل</button></div></div></article>`).join("");
 }
