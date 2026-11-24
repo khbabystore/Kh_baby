@@ -12,14 +12,40 @@ let cart=JSON.parse(localStorage.getItem("khbaby-cart")||"[]"), selectedProduct=
 const $=s=>document.querySelector(s);
 function money(n){return n.toLocaleString("ar-EG")+" ج.م"}
 function renderProducts(){
+ const grid=$("#productGrid");
+ if(!grid) return;
  const collection=document.body.dataset.collection;
  const visibleProducts=collection==="summer" ? products.filter(p=>p.id>=1 && p.id<=4) : collection==="winter" ? products.filter(p=>p.id>=5 && p.id<=8) : products;
  const countLabel=document.querySelector(".count-label");
  if(countLabel && collection) countLabel.textContent=`${visibleProducts.length} منتجات`;
- $("#productGrid").innerHTML=visibleProducts.map(p=>`<article class="product">
+ grid.innerHTML=visibleProducts.map(p=>`<article class="product">
 <img src="${p.images[0]}" alt="${p.name}">
 <div class="pbody"><h3>${p.name}</h3><p>${p.subtitle} • ${p.color}</p><div class="pfoot"><span class="price">${p.originalPrice ? `<del>${money(p.originalPrice)}</del> ` : ""}${money(p.price)}</span><button class="view" onclick="openProduct(${p.id})">التفاصيل</button></div></div></article>`).join("");
 }
+function renderFeaturedProducts(){
+ const track=$("#featuredProducts");
+ const scroller=$("#featuredScroller");
+ if(!track || !scroller) return;
+ track.innerHTML=products.map(p=>`<article class="product featured-product">
+<img src="${p.images[0]}" alt="${p.name}" loading="lazy">
+<div class="pbody"><h3>${p.name}</h3><p>${p.subtitle} • ${p.color}</p><div class="pfoot"><span class="price">${p.originalPrice ? `<del>${money(p.originalPrice)}</del> ` : ""}${money(p.price)}</span><button class="view" onclick="openProduct(${p.id})">التفاصيل</button></div></div></article>`).join("");
+ let autoTimer=null;
+ const pause=()=>{if(autoTimer){clearInterval(autoTimer);autoTimer=null;}};
+ const resume=()=>{pause();autoTimer=setInterval(()=>{
+   const max=scroller.scrollWidth-scroller.clientWidth;
+   if(max<=4) return;
+   if(scroller.scrollLeft>=max-8) scroller.scrollTo({left:0,behavior:"smooth"});
+   else scroller.scrollBy({left:260,behavior:"smooth"});
+ },2800);};
+ scroller.addEventListener("mouseenter",pause);
+ scroller.addEventListener("mouseleave",resume);
+ scroller.addEventListener("touchstart",pause,{passive:true});
+ scroller.addEventListener("touchend",()=>setTimeout(resume,1800),{passive:true});
+ scroller.addEventListener("pointerdown",pause);
+ scroller.addEventListener("pointerup",()=>setTimeout(resume,1800));
+ resume();
+}
+
 function openProduct(id){
  selectedProduct=products.find(p=>p.id===id); selectedSize=null;
  if(typeof fbq==="function") fbq('track','ViewContent',{
@@ -83,4 +109,4 @@ document.querySelectorAll('a.whatsapp, a.wa-float').forEach(link=>{
    if(typeof fbq==="function") fbq('track','Contact');
  });
 });
-renderProducts();renderCart();
+renderProducts();renderFeaturedProducts();renderCart();

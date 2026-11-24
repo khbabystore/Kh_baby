@@ -26,3 +26,13 @@ footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-s
 .collection-copy b{margin-top:12px;background:#fff;color:#765d2c;padding:9px 16px;border-radius:99px;font-size:13px}
 .back-collections{margin-top:26px}.back-collections a{color:#9b7729;text-decoration:none;font-weight:700}
 @media(max-width:650px){.collection-grid{grid-template-columns:1fr}.collection-card{min-height:300px}}
+
+
+/* Homepage featured products: auto-scrolling, touch-friendly row */
+.featured{padding-top:28px}
+.featured-scroller{overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--gold2) transparent;padding:4px 2px 18px;direction:ltr;cursor:grab}
+.featured-scroller:active{cursor:grabbing}
+.featured-track{display:flex;gap:18px;width:max-content;direction:ltr}
+.featured-product{width:260px;flex:0 0 260px;scroll-snap-align:start;direction:rtl}
+.featured-product img{display:block}
+@media(max-width:650px){.featured-product{width:220px;flex-basis:220px}.featured-track{gap:13px}.featured .section-head{align-items:center}}
