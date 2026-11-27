@@ -136,5 +136,53 @@
       "assets/product-8-1.jpg",
       "assets/product-8-2.jpg"
     ]
+  },
+  {
+    "id": 9,
+    "name": "ترنج دبدوب بجيب",
+    "subtitle": "ترنج بيبي ميلتون قطن 100%",
+    "price": 400,
+    "color": "زيتي - بني - كحلي",
+    "colors": [
+      "زيتي",
+      "بني",
+      "كحلي"
+    ],
+    "sizes": [
+      "0-6 شهور",
+      "6-12 شهر",
+      "12-24 شهر"
+    ],
+    "image": "assets/winter-bear-olive.jpg",
+    "images": [
+      "assets/winter-bear-olive.jpg",
+      "assets/winter-bear-brown.jpg",
+      "assets/winter-bear-navy.jpg"
+    ],
+    "soldOut": true
+  },
+  {
+    "id": 10,
+    "name": "ترنج ماشروم كشكشة",
+    "subtitle": "ترنج ميلتون قطن 100%",
+    "price": 400,
+    "color": "أحمر - لافندر - سيمون",
+    "colors": [
+      "أحمر",
+      "لافندر",
+      "سيمون"
+    ],
+    "sizes": [
+      "0-6 شهور",
+      "6-12 شهر",
+      "12-24 شهر"
+    ],
+    "image": "assets/winter-mushroom-red.jpg",
+    "images": [
+      "assets/winter-mushroom-red.jpg",
+      "assets/winter-mushroom-lavender.jpg",
+      "assets/winter-mushroom-simon.jpg"
+    ],
+    "soldOut": true
   }
 ]

@@ -36,3 +36,8 @@ footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-s
 .featured-product{width:260px;flex:0 0 260px;scroll-snap-align:start;direction:rtl}
 .featured-product img{display:block}
 @media(max-width:650px){.featured-product{width:220px;flex-basis:220px}.featured-track{gap:13px}.featured .section-head{align-items:center}}
+
+/* Product color variants and sold-out restock state */
+#modalColors{margin:12px 0 16px}
+#modalColors>label{display:block;margin-bottom:8px;font-weight:700}
+#addFromModal:disabled{opacity:1;background:#777;color:#fff;cursor:not-allowed;border-color:#777}

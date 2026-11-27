@@ -6,16 +6,18 @@ const products = [
 {id:5,name:"سلوبت فرو أحمر دبدوب",subtitle:"سلوبت فرو ناعم بتطريز الدب الأنيق",price:350,color:"أحمر",sizes:["0-6 شهور", "6-12 شهر", "12-24 شهر"],images:["assets/product-5-1.jpg", "assets/product-5-2.jpg"]},
 {id:6,name:"سلوبت فرو أحمر رجل الثلج",subtitle:"سلوبت فرو ناعم بتطريز رجل الثلج",price:350,color:"أحمر",sizes:["0-6 شهور", "6-12 شهر", "12-24 شهر"],images:["assets/product-6-1.jpg", "assets/product-6-2.jpg"]},
 {id:7,name:"سلوبت فرو بينك النجمة",subtitle:"سلوبت فرو ناعم بشكل نجمة رقيق",price:300,color:"بينك",sizes:["0-6 شهور", "6-12 شهر"],images:["assets/product-7-1.jpg", "assets/product-7-2.jpg"]},
-{id:8,name:"سلوبت فرو بيبي بلو النجمة",subtitle:"سلوبت فرو ناعم بشكل نجمة رقيق",price:300,color:"بيبي بلو",sizes:["0-6 شهور", "6-12 شهر"],images:["assets/product-8-1.jpg", "assets/product-8-2.jpg"]}
+{id:8,name:"سلوبت فرو بيبي بلو النجمة",subtitle:"سلوبت فرو ناعم بشكل نجمة رقيق",price:300,color:"بيبي بلو",sizes:["0-6 شهور", "6-12 شهر"],images:["assets/product-8-1.jpg", "assets/product-8-2.jpg"]},
+{id:9,name:"ترنج دبدوب بجيب",subtitle:"ترنج بيبي ميلتون قطن 100%",price:400,color:"زيتي - بني - كحلي",colors:["زيتي","بني","كحلي"],sizes:["0-6 شهور","6-12 شهر","12-24 شهر"],images:["assets/winter-bear-olive.jpg","assets/winter-bear-brown.jpg","assets/winter-bear-navy.jpg"],soldOut:true},
+{id:10,name:"ترنج ماشروم كشكشة",subtitle:"ترنج ميلتون قطن 100%",price:400,color:"أحمر - لافندر - سيمون",colors:["أحمر","لافندر","سيمون"],sizes:["0-6 شهور","6-12 شهر","12-24 شهر"],images:["assets/winter-mushroom-red.jpg","assets/winter-mushroom-lavender.jpg","assets/winter-mushroom-simon.jpg"],soldOut:true}
 ];
-let cart=JSON.parse(localStorage.getItem("khbaby-cart")||"[]"), selectedProduct=null, selectedSize=null;
+let cart=JSON.parse(localStorage.getItem("khbaby-cart")||"[]"), selectedProduct=null, selectedSize=null, selectedColor=null;
 const $=s=>document.querySelector(s);
 function money(n){return n.toLocaleString("ar-EG")+" ج.م"}
 function renderProducts(){
  const grid=$("#productGrid");
  if(!grid) return;
  const collection=document.body.dataset.collection;
- const visibleProducts=collection==="summer" ? products.filter(p=>p.id>=1 && p.id<=4) : collection==="winter" ? products.filter(p=>p.id>=5 && p.id<=8) : products;
+ const visibleProducts=collection==="summer" ? products.filter(p=>p.id>=1 && p.id<=4) : collection==="winter" ? products.filter(p=>p.id>=5 && p.id<=10) : products;
  const countLabel=document.querySelector(".count-label");
  if(countLabel && collection) countLabel.textContent=`${visibleProducts.length} منتجات`;
  grid.innerHTML=visibleProducts.map(p=>`<article class="product">
@@ -47,7 +49,7 @@ function renderFeaturedProducts(){
 }
 
 function openProduct(id){
- selectedProduct=products.find(p=>p.id===id); selectedSize=null;
+ selectedProduct=products.find(p=>p.id===id); selectedSize=null; selectedColor=selectedProduct.colors ? selectedProduct.colors[0] : null;
  if(typeof fbq==="function") fbq('track','ViewContent',{
    content_ids:[String(selectedProduct.id)],
    content_name:selectedProduct.name,
@@ -55,14 +57,17 @@ function openProduct(id){
    value:selectedProduct.price,
    currency:'EGP'
  });
- $("#modalGallery").innerHTML=selectedProduct.images.map((img,i)=>`<img src="${img}" alt="${selectedProduct.name} - صورة ${i+1}">`).join("");
- $("#modalName").textContent=selectedProduct.name; $("#modalSub").textContent=selectedProduct.subtitle+" • اللون "+selectedProduct.color;
+ $("#modalGallery").innerHTML=selectedProduct.images.map((img,i)=>`<img src="${img}" alt="${selectedProduct.name} - ${selectedProduct.colors ? selectedProduct.colors[i] : `صورة ${i+1}`}">`).join("");
+ $("#modalName").textContent=selectedProduct.name; $("#modalSub").textContent=selectedProduct.subtitle+" • الألوان "+selectedProduct.color;
+ $("#modalColors").innerHTML=selectedProduct.colors ? `<label>اختاري اللون</label><div class="sizes">${selectedProduct.colors.map((c,i)=>`<button class="size color-choice ${i===0?"active":""}" onclick="chooseColor(this,'${c}',${i})">${c}</button>`).join("")}</div>` : "";
  $("#modalPrice").innerHTML=`${selectedProduct.originalPrice ? `<del>${money(selectedProduct.originalPrice)}</del> ` : ""}<strong>${money(selectedProduct.price)}</strong>`;
  $("#modalSizes").innerHTML=selectedProduct.sizes.map(s=>`<button class="size" onclick="chooseSize(this,'${s}')">${s}</button>`).join("");
+ $("#addFromModal").disabled=!!selectedProduct.soldOut; $("#addFromModal").textContent=selectedProduct.soldOut ? "نفد من المخزون — قريباً" : "أضف للسلة";
  $("#productModal").classList.add("show"); $("#productModal").setAttribute("aria-hidden","false");
 }
-function chooseSize(btn,size){selectedSize=size;document.querySelectorAll(".size").forEach(x=>x.classList.remove("active"));btn.classList.add("active")}
-$("#addFromModal").onclick=()=>{if(!selectedSize)return alert("من فضلك اختار المقاس");cart.push({productId:selectedProduct.id,size:selectedSize});
+function chooseSize(btn,size){selectedSize=size;btn.parentElement.querySelectorAll(".size").forEach(x=>x.classList.remove("active"));btn.classList.add("active")}
+function chooseColor(btn,color,index){selectedColor=color;btn.parentElement.querySelectorAll(".size").forEach(x=>x.classList.remove("active"));btn.classList.add("active");const gallery=document.querySelectorAll("#modalGallery img");if(gallery[index])gallery[index].scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"})}
+$("#addFromModal").onclick=()=>{if(selectedProduct.soldOut)return;if(!selectedSize)return alert("من فضلك اختار المقاس");cart.push({productId:selectedProduct.id,size:selectedSize,color:selectedColor});
  if(typeof fbq==="function") fbq('track','AddToCart',{
    content_ids:[String(selectedProduct.id)],
    content_name:selectedProduct.name,
@@ -76,7 +81,7 @@ function renderCart(){
  $("#cartCount").textContent=cart.length;
  if(!cart.length){$("#cartItems").innerHTML='<div style="padding:40px 5px;text-align:center;color:#75818a">السلة فارغة حاليًا 🩵</div>';$(`#cartTotal`).textContent=money(0);return}
  let total=0;
- $("#cartItems").innerHTML=cart.map((item,i)=>{let p=products.find(x=>x.id===item.productId);total+=p.price;return `<div class="cart-item"><img src="${p.images[0]}" alt=""><div><h4>${p.name}</h4><small>المقاس: ${item.size}<br>${p.originalPrice ? `<del>${money(p.originalPrice)}</del> ` : ""}${money(p.price)}</small></div><button class="remove" onclick="removeItem(${i})">حذف</button></div>`}).join("");
+ $("#cartItems").innerHTML=cart.map((item,i)=>{let p=products.find(x=>x.id===item.productId);total+=p.price;return `<div class="cart-item"><img src="${p.images[0]}" alt=""><div><h4>${p.name}</h4><small>${item.color ? `اللون: ${item.color}<br>` : ""}المقاس: ${item.size}<br>${p.originalPrice ? `<del>${money(p.originalPrice)}</del> ` : ""}${money(p.price)}</small></div><button class="remove" onclick="removeItem(${i})">حذف</button></div>`}).join("");
  $("#cartTotal").textContent=money(total)
 }
 function removeItem(i){cart.splice(i,1);saveCart()}
@@ -98,7 +103,7 @@ $("#checkout").onclick=()=>{
    });
  }
  let lines=["مرحبًا KH Baby 👋","أريد تأكيد الطلب:",""];
- cart.forEach((item,i)=>{let p=products.find(x=>x.id===item.productId);lines.push(`${i+1}. ${p.name} — المقاس ${item.size} — ${money(p.price)}`)});
+ cart.forEach((item,i)=>{let p=products.find(x=>x.id===item.productId);lines.push(`${i+1}. ${p.name} — ${item.color ? `اللون ${item.color} — ` : ""}المقاس ${item.size} — ${money(p.price)}`)});
  let total=cart.reduce((s,item)=>s+products.find(p=>p.id===item.productId).price,0);
  lines.push("",`الإجمالي: ${money(total)}`,"","الاسم:","المحافظة:","العنوان:","رقم الهاتف:");
  location.href="https://wa.me/201275472977?text="+encodeURIComponent(lines.join("\n"));
